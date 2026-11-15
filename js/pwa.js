@@ -53,6 +53,10 @@ function montarResumoPedido() {
   for (const item of pedido) {
     texto = texto + item.quantidade + "x " + item.nome + " - " + formatarPreco(item.preco * item.quantidade) + "\n";
   }
+  const observacao = localStorage.getItem("observacaoPedido") || "";
+  if (observacao.trim() !== "") {
+    texto = texto + "Observação: " + observacao.trim() + "\n";
+  }
   texto = texto + "Total: " + formatarPreco(calcularTotal());
   return texto;
 }

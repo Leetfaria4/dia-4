@@ -463,3 +463,42 @@ video.espelhado {
   font-size: 1rem;
   cursor: pointer;
 }
+
+/* ---------- Dia 6: busca e observação ---------- */
+.busca-produto {
+  width: 100%;
+  padding: 12px 14px;
+  margin-bottom: 12px;
+  border: 1px solid #d8c4b3;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--cor-texto);
+  font: inherit;
+}
+
+.busca-produto:focus,
+.observacao-pedido:focus {
+  outline: 2px solid var(--cor-destaque);
+  border-color: var(--cor-principal);
+}
+
+.label-observacao {
+  display: block;
+  margin: 12px 0 6px;
+  font-weight: bold;
+  color: var(--cor-principal);
+}
+
+.observacao-pedido {
+  display: block;
+  width: 100%;
+  min-height: 76px;
+  padding: 10px 12px;
+  margin-bottom: 16px;
+  border: 1px solid #d8c4b3;
+  border-radius: 12px;
+  background: #fff;
+  color: var(--cor-texto);
+  font: inherit;
+  resize: vertical;
+}

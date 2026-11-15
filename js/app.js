@@ -60,6 +60,9 @@ for (const aba of abas) {
 
 const listaProdutos = document.querySelector("#lista-produtos");
 const botoesFiltro = document.querySelectorAll(".filtro");
+const campoBusca = document.querySelector("#busca-produto");
+let categoriaAtual = "Todos";
+let textoBusca = "";
 
 function criarCard(produto) {
   const card = document.createElement("article");
@@ -79,14 +82,27 @@ function criarCard(produto) {
   return card;
 }
 
-function mostrarCardapio(categoria) {
+function mostrarCardapio() {
   listaProdutos.innerHTML = "";
-  for (const produto of produtos) {
-    if (categoria === "Todos" || produto.categoria === categoria) {
-      listaProdutos.appendChild(criarCard(produto));
-    }
+  const encontrados = produtos.filter(function (produto) {
+    const combinaCategoria = categoriaAtual === "Todos" || produto.categoria === categoriaAtual;
+    const combinaBusca = produto.nome.toLowerCase().includes(textoBusca);
+    return combinaCategoria && combinaBusca;
+  });
+
+  for (const produto of encontrados) {
+    listaProdutos.appendChild(criarCard(produto));
+  }
+
+  if (encontrados.length === 0) {
+    listaProdutos.innerHTML = '<p class="vazio">Nenhum produto encontrado.</p>';
   }
 }
+
+campoBusca.addEventListener("input", function () {
+  textoBusca = campoBusca.value.toLowerCase().trim();
+  mostrarCardapio();
+});
 
 for (const botao of botoesFiltro) {
   botao.addEventListener("click", function () {
@@ -94,7 +110,8 @@ for (const botao of botoesFiltro) {
       outro.classList.remove("ativo");
     }
     botao.classList.add("ativo");
-    mostrarCardapio(botao.dataset.categoria);
+    categoriaAtual = botao.dataset.categoria;
+    mostrarCardapio();
   });
 }
 
@@ -117,6 +134,14 @@ function salvarPedido() {
 
 // Cada item do pedido: { id, nome, preco, quantidade }
 let pedido = carregarPedido();
+
+const campoObservacao = document.querySelector("#observacao-pedido");
+if (campoObservacao) {
+  campoObservacao.value = localStorage.getItem("observacaoPedido") || "";
+  campoObservacao.addEventListener("input", function () {
+    localStorage.setItem("observacaoPedido", campoObservacao.value);
+  });
+}
 
 function adicionarAoPedido(produto) {
   // Procura se o produto já está no pedido
@@ -218,5 +243,5 @@ function finalizarPedido() {
 document.querySelector("#btn-finalizar").addEventListener("click", finalizarPedido);
 
 // ---------- Início ----------
-mostrarCardapio("Todos");
+mostrarCardapio();
 mostrarPedido();
